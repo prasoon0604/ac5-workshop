@@ -39,3 +39,18 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Pre-build dev container image 🔨
+        uses: devcontainers/ci@v0.3
+        env:
+          FROM_IMAGE: ${{ inputs.from_image }}
+          FROM_VARIANT: ${{ inputs.from_variant }}
+          USERNAME: ${{ inputs.username }}
+          UID: ${{ inputs.user_id }}
+          GID: ${{ inputs.group_id }}
+        with:
+          subFolder: containers/my_container
+          imageName: ghcr.io/${{ steps.gh_repo.outputs.name_lowcase }}/my_container
+          imageTag: latest
+          platform: linux/arm64/v8,linux/amd64
+          push: always
