@@ -21,3 +21,15 @@ if ! ${CODESPACES:-false}; then
         fi
     fi
 fi
+
+# run magic moby script for D-in-D
+/usr/local/share/docker-init.sh
+
+# check if ceos-lab image already present
+if [ -z "$(${CONTAINER_ENGINE} image ls | grep 'arista/ceos')" ]; then
+    docker load < ceos_lab.tar.gz
+    echo "WARNING: cEOS-lab image was successfully loaded."
+fi
+
+# start the lab
+make start
